@@ -2,6 +2,8 @@ import {useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from '../data-api/fetchData'
 import Button from '../components/Button'
+let url = `http://localhost:5000/`
+let count = 0
 
 const Posts = () => {
 
@@ -10,8 +12,11 @@ const Posts = () => {
   const history = useHistory()
   
   useEffect(() => {
-    const url = `http://localhost:5000/posts`
-    const api = new Api(url)
+    const limitPage = {
+      limit : count
+    }
+
+    const api = new Api(url + 'posts', limitPage)
     async function fetchData(){
       const data = await api.postData()
       setState(data)
@@ -41,11 +46,31 @@ const Posts = () => {
     }
   }
 
-  return (
+  const nextPage = async () => {
+    count += 4
+    const limitPage = {
+      limit : count
+    }
+    const api = new Api(url + 'posts', limitPage)
+    const data = await api.postData()
+    setState(data)
+  }
+  
+  if (state.length === 0) {
+    return (
+      <div className="App">
+        <h1>Data Habis |</h1>
+        <Button className="login" text="Login" data={funButton} />
+        <Button className="signup" text="SignUp" data={funButton} />
+      </div>
+    )
+  } else {
+    return (
       <div className="App">
         <h1>{text} |</h1>
         <Button className="login" text="Login" data={funButton} />
-        <Button className="signup" text="SignUp" data={funButton}/>
+        <Button className="signup" text="SignUp" data={funButton} />
+        <p onClick={nextPage}>Next</p>
         {
           state.map(post => 
             <div className="data" key={post.title}>
@@ -57,6 +82,7 @@ const Posts = () => {
         }
       </div>
     )
+  }
 }
 
 export default Posts

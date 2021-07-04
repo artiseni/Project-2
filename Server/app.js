@@ -12,9 +12,12 @@ app.use(express.json()) // req body
 // All blogs
 app.post('/posts', async (req, res) => {
     try {
+        const limit = req.body.limit
+        // console.log(limit)
         const displayData = await pool.query(`SELECT username, title, content
         FROM users
-        INNER JOIN post on username = post_by`)
+        INNER JOIN post on username = post_by
+        OFFSET ${limit} LIMIT 4`)
         res.json(displayData.rows)
 
     } catch (err) {
@@ -98,6 +101,55 @@ app.post('/login', async (req, res) => {
 
     } catch (err) {
         console.error(err.message);
+    }
+})
+
+app.post('/home/edit', async (req, res) => {
+    const username = req.body.username
+    const title = req.body.title
+    const content = req.body.content
+    const newTitle = req.body.newTitle
+    const newContent = req.body.newContent
+
+    const sql = `UPDATE post
+                SET title = '${newTitle}',
+                content = '${newContent}'
+                WHERE post_by = '${username}'
+                AND title = '${title}'
+                AND content = '${content}'`
+    
+    const passData = await pool.query(sql)
+    
+    if (passData.rowCount === 1) {
+        const sqlDataUser = `SELECT username, title, content FROM users LEFT JOIN post ON username = post_by WHERE username = '${username}'`
+            const dataUser = await pool.query(sqlDataUser)
+
+            if (dataUser.rowCount === 0) {
+                res.status(400).send({ "message" : "Data error!"})
+            } else {
+                res.json(dataUser.rows)
+            }
+    }
+})
+
+app.post('/home/add', async (req, res) => {
+    const username = req.body.username
+    const title = req.body.title
+    const content = req.body.content
+    
+    const sql = `INSERT INTO post VALUES 
+                (DEFAULT, '${username}', '${title}', '${content}')`
+    const passData = await pool.query(sql)
+
+    if (passData.rowCount === 1) {
+        const sqlDataUser = `SELECT username, title, content FROM users LEFT JOIN post ON username = post_by WHERE username = '${username}'`
+            const dataUser = await pool.query(sqlDataUser)
+
+            if (dataUser.rowCount === 0) {
+                res.status(400).send({ "message" : "Data error!"})
+            } else {
+                res.json(dataUser.rows)
+            }
     }
 })
 
