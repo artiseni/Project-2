@@ -18,6 +18,7 @@ app.post('/posts', async (req, res) => {
         FROM users
         INNER JOIN post on username = post_by
         OFFSET ${limit} LIMIT 4`)
+        // console.log(displayData.rowCount)
         res.json(displayData.rows)
 
     } catch (err) {

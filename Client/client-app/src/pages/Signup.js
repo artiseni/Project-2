@@ -59,11 +59,19 @@ const SignUp = () => {
     }
 
     const btnData = async () => {
-        const api = new Api(`http://localhost:5000/signup`, keyChanger(passData))
-        const data = await api.postData()
-        resultHandler(data)
-        // console.log(data)
-        // console.log(passData) // request to api
+
+        if (passData.username === '' || passData.email === '' || passData.password1 === '' || passData.password2 === '') {
+            alert('Data tidak boleh kosong')
+        } else if (passData.password1 !== passData.password2) {
+            alert('Pasword tidak sama')
+        } else {
+            const api = new Api(`http://localhost:5000/signup`, keyChanger(passData))
+            const data = await api.postData()
+            resultHandler(data)
+            // console.log(data)
+            // console.log(passData) // request to api
+        }
+
     }
 
     return (
