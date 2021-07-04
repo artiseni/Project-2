@@ -1,6 +1,5 @@
 import {useState, useEffect} from 'react'
 import { useHistory } from 'react-router-dom'
-import moment from 'moment';
 import Api from '../data-api/fetchData'
 import Button from '../components/Button'
 let url = `http://localhost:5000/`
@@ -11,7 +10,6 @@ const Posts = () => {
   const text = 'Simple Blog'
   const [state, setState] = useState([])
   const history = useHistory()
-  const dataTime = moment().format('MMMM Do YYYY, h:mm:ss a');
   
   useEffect(() => {
     const limitPage = {
@@ -31,7 +29,6 @@ const Posts = () => {
     data === 'login' ? history.push(`${data}`) : history.push(`${data}`)
   }
 
-  console.log(dataTime)
 
   const nextPage = async () => {
 

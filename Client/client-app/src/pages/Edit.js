@@ -2,12 +2,14 @@ import { useLocation } from 'react-router-dom';
 import { Redirect } from 'react-router-dom'
 import {useHistory} from 'react-router-dom'
 import { useEffect } from 'react'
+import moment from 'moment';
 import Button from '../components/Button'
 import Api from '../data-api/fetchData'
 
 const Edit = () => {
     const location = useLocation()
     const history = useHistory()
+    const dataTime = moment().format('MMMM Do YYYY, h:mm:ss a');
 
     useEffect(() => {
         console.log(location.state)
@@ -27,8 +29,11 @@ const Edit = () => {
             title : location.state.title,
             content : location.state.content,
             newTitle : titleStr2,
-            newContent : contentStr
+            newContent : contentStr,
+            last_update : dataTime 
         }
+
+        console.log(data)
 
         const api = new Api(`http://localhost:5000/home/edit`, data)
         const res = await api.postData()

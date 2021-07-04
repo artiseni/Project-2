@@ -105,16 +105,19 @@ app.post('/login', async (req, res) => {
     }
 })
 
+// update
 app.post('/home/edit', async (req, res) => {
     const username = req.body.username
     const title = req.body.title
     const content = req.body.content
     const newTitle = req.body.newTitle
     const newContent = req.body.newContent
+    const last_update = req.body.last_update
 
     const sql = `UPDATE post
                 SET title = '${newTitle}',
-                content = '${newContent}'
+                content = '${newContent}',
+                last_update = '${last_update}'
                 WHERE post_by = '${username}'
                 AND title = '${title}'
                 AND content = '${content}'`
