@@ -14,9 +14,10 @@ app.post('/posts', async (req, res) => {
     try {
         const limit = req.body.limit
         // console.log(limit)
-        const displayData = await pool.query(`SELECT username, title, content
+        const displayData = await pool.query(`SELECT username, title, content, last_update
         FROM users
         INNER JOIN post on username = post_by
+        ORDER BY last_update DESC
         OFFSET ${limit} LIMIT 4`)
         // console.log(displayData.rowCount)
         res.json(displayData.rows)
@@ -87,13 +88,14 @@ app.post('/login', async (req, res) => {
 
         if (passData.rows.length === 1) {
 
-            const sqlDataUser = `SELECT username, title, content FROM users LEFT JOIN post ON username = post_by WHERE email = '${email}'`
+            const sqlDataUser = `SELECT username, title, content, last_update FROM users LEFT JOIN post ON username = post_by WHERE email = '${email}'`
             const dataUser = await pool.query(sqlDataUser)
 
             if (dataUser.rowCount === 0) {
                 res.status(400).send({ "message" : "Data error!"})
             } else {
                 res.json(dataUser.rows)
+                // console.log(dataUser.rows)
             }
             
         } else {
@@ -107,6 +109,7 @@ app.post('/login', async (req, res) => {
 
 // update
 app.post('/home/edit', async (req, res) => {
+
     const username = req.body.username
     const title = req.body.title
     const content = req.body.content
@@ -125,7 +128,7 @@ app.post('/home/edit', async (req, res) => {
     const passData = await pool.query(sql)
     
     if (passData.rowCount === 1) {
-        const sqlDataUser = `SELECT username, title, content FROM users LEFT JOIN post ON username = post_by WHERE username = '${username}'`
+        const sqlDataUser = `SELECT username, title, content, last_update FROM users LEFT JOIN post ON username = post_by WHERE username = '${username}'`
             const dataUser = await pool.query(sqlDataUser)
 
             if (dataUser.rowCount === 0) {
@@ -137,16 +140,18 @@ app.post('/home/edit', async (req, res) => {
 })
 
 app.post('/home/add', async (req, res) => {
+    
     const username = req.body.username
     const title = req.body.title
     const content = req.body.content
+    const last_update = req.body.last_update
     
     const sql = `INSERT INTO post VALUES 
-                (DEFAULT, '${username}', '${title}', '${content}')`
+                (DEFAULT, '${username}', '${title}', '${content}', '${last_update}')`
     const passData = await pool.query(sql)
 
     if (passData.rowCount === 1) {
-        const sqlDataUser = `SELECT username, title, content FROM users LEFT JOIN post ON username = post_by WHERE username = '${username}'`
+        const sqlDataUser = `SELECT username, title, content, last_update FROM users LEFT JOIN post ON username = post_by WHERE username = '${username}'`
             const dataUser = await pool.query(sqlDataUser)
 
             if (dataUser.rowCount === 0) {

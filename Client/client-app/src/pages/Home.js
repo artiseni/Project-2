@@ -1,13 +1,14 @@
-import {useEffect} from 'react'
-import { useLocation } from 'react-router-dom';
-import { Redirect } from 'react-router-dom'
-import {useHistory} from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useLocation , Redirect , useHistory} from 'react-router-dom'
 import Button from '../components/Button'
+import moment from 'moment'
 
 const Home = () => {
 
     const location = useLocation()
     const history = useHistory()
+    const dataTime = moment().format('MMMM Do YYYY, h:mm:ss a');
+
 
     useEffect(() => {
         console.log(location.state)
@@ -22,7 +23,8 @@ const Home = () => {
         const data = {
             title : title,
             content : content,
-            username : username
+            username: username,
+            last_update : dataTime
         }
 
         history.push({
@@ -69,6 +71,7 @@ const Home = () => {
                         location.state.map(post => 
                             <div className="data" key={post.title}>
                                 <p>Oleh : {post.username}</p>
+                                <p>last update : {post.last_update}</p>
                                 <h3>{post.title}</h3>
                                 <p>{post.content}</p>
                                 <Button text="Edit" className="btnEdit" title={post.title} content={post.content} username={post.username} data={editEvent}/>

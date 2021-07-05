@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import Api from '../data-api/fetchData'
 import Button from '../components/Button'
@@ -65,7 +65,7 @@ const Posts = () => {
     )
   } else {
 
-    console.log(state.length)
+    console.log(state)
 
     if (state.length < 4) {
       return (
@@ -78,6 +78,7 @@ const Posts = () => {
             state.map(post => 
               <div className="data" key={post.title}>
                 <p>Oleh : {post.username}</p>
+                <p>Last update : {post.last_update}</p>
                 <h3>{post.title}</h3>
                 <p>{post.content}</p>
               </div>
@@ -98,6 +99,7 @@ const Posts = () => {
             state.map(post => 
               <div className="data" key={post.title}>
                 <p>Oleh : {post.username}</p>
+                <p>Last update : {post.last_update}</p>
                 <h3>{post.title}</h3>
                 <p>{post.content}</p>
               </div>
@@ -117,6 +119,7 @@ const Posts = () => {
             state.map(post => 
               <div className="data" key={post.title}>
                 <p>Oleh : {post.username}</p>
+                <p>Last update : {post.last_update}</p>
                 <h3>{post.title}</h3>
                 <p>{post.content}</p>
               </div>

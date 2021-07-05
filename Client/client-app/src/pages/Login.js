@@ -40,6 +40,7 @@ const Login = () => {
     const btnData = async () => {
         const api = new Api(`http://localhost:5000/login`, passData)
         const data = await api.postData()
+        console.log(data)
         resultHandler(data)
         // console.log(passData) request to api
     } 

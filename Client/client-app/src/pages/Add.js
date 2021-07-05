@@ -1,12 +1,16 @@
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import {useHistory} from 'react-router-dom'
 import Button from '../components/Button'
 import Api from '../data-api/fetchData'
+import moment from 'moment';
 
 const Add = () => {
 
     const location = useLocation()
     const history = useHistory()
+    const dataTime = moment().format('MMMM Do YYYY, h:mm:ss a');
+
 
     const username = location.state
 
@@ -20,7 +24,8 @@ const Add = () => {
         const data = {
             username : username,
             title: titleStr1,
-            content : content
+            content: content,
+            last_update : dataTime 
         }
 
         const api = new Api(`http://localhost:5000/home/add`, data)

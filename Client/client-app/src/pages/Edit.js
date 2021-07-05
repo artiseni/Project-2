@@ -1,7 +1,5 @@
-import { useLocation } from 'react-router-dom';
-import { Redirect } from 'react-router-dom'
-import {useHistory} from 'react-router-dom'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
+import { useLocation, Redirect , useHistory } from 'react-router-dom'
 import moment from 'moment';
 import Button from '../components/Button'
 import Api from '../data-api/fetchData'
@@ -47,19 +45,14 @@ const Edit = () => {
         // gotoHome(data)
     }
 
-    // const gotoHome = async data => {
-    //     const api = new Api(`http://localhost:5000/home/edit`, data)
-    //     const res = await api.postData()
-    //     // console.log(res)
-    //     // console.log(data)
-    // }
-
     if (location.state === undefined) {
         return  <Redirect to='/login'/>
     } else {
+
         const username = location.state.username
         const title = location.state.title
         const content = location.state.content
+
         return (
             <div className="App">
                 <h1>Edit page |</h1>

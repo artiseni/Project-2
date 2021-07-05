@@ -1,4 +1,5 @@
 // import axios from 'axios'
+import React from 'react';
 import Posts from './pages/Posts'
 import Login from './pages/Login'
 import Home from './pages/Home'
